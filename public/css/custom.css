@@ -1,0 +1,24 @@
+.bg-main-color {
+    background-color: #2F3B59;
+}
+
+.nav-item.active a{
+    color: #4DB7FE !important;
+}
+
+li.nav-item.active {
+    border-bottom: 3px solid #4DB7FE;
+}
+
+ul.navbar-nav{
+    min-height: 60px;
+}
+
+ul.navbar-nav >li {
+    line-height: 60px !important;
+}
+
+ul.navbar-nav a{
+    padding-left: 25px !important;
+    padding-right: 25px !important;
+}
