@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\Category;
+use App\Models\Listing;
+use App\User;
 use Illuminate\Database\Seeder;
-use App\Category;
+use Faker\Factory as Faker;
 
 class CategoriesTableSeeder extends Seeder
 {
@@ -12,46 +15,38 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        Category::create([
-            'title'         => 'Category 1',
-            'description'   => 'Description 1',
-            'image'         => 'http://citybook.kwst.net/images/all/1.jpg',
-            'active'        => 1
-        ]);
 
-        Category::create([
-            'title'         => 'Category 2',
-            'description'   => 'Description 2',
-            'image'         => 'http://citybook.kwst.net/images/all/1.jpg',
-            'active'        => 1
-        ]);
+        $categories = [
+            [
+                'name'      => 'Hotels',
+            ],
+            [
+                'name'      => 'Restuarants',
+            ],
+            [
+                'name'      => 'Events',
+            ],
+        ];
 
-        Category::create([
-            'title'         => 'Category 3',
-            'description'   => 'Description 3',
-            'image'         => 'http://citybook.kwst.net/images/all/1.jpg',
-            'active'        => 1
-        ]);
+        $faker      = Faker::create();
+        $user       = User::first();
+        foreach ($categories as $category)  {
+            $cat = Category::create([
+                'title'  => $category['name']
+            ]);
 
-        Category::create([
-            'title'         => 'Category 4',
-            'description'   => 'Description 4',
-            'image'         => 'http://citybook.kwst.net/images/all/1.jpg',
-            'active'        => 1
-        ]);
-
-        Category::create([
-            'title'         => 'Category 5',
-            'description'   => 'Description 5',
-            'image'         => 'http://citybook.kwst.net/images/all/1.jpg',
-            'active'        => 1
-        ]);
-
-        Category::create([
-            'title'         => 'Category 6',
-            'description'   => 'Description 6',
-            'image'         => 'http://citybook.kwst.net/images/all/1.jpg',
-            'active'        => 1
-        ]);
+            for ($i = 1; $i <= 3; $i++) {
+                Listing::create([
+                    'title'         => $faker->sentence(),
+                    'description'   => $faker->text($maxNbChars = 200),
+                    'phone'         => $faker->phoneNumber(),
+                    'email'         => $faker->safeEmail(),
+                    'address'       => $faker->address(),
+                    'image'         => "/img/slides/" . $faker->randomElement([7, 8, 9, 10, 11]) . ".jpg",
+                    'user_id'       => $user->id,
+                    'category_id'   => $cat->id,
+                ]);
+            }
+        }
     }
 }

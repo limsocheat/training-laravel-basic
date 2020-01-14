@@ -16,12 +16,17 @@ class CreateListingsTable extends Migration
         Schema::create('listings', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->text('description')->nullable();
-            $table->double('rate')->default(0.00);
-            $table->integer('review')->default(0);
-            $table->string('address')->nullable();
+            $table->longText('description');
+            $table->string('phone');
+            $table->string('email');
+            $table->string('address');
             $table->binary('image')->nullable();
+            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('category_id')->index()->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
         });
     }
 

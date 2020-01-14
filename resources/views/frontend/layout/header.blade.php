@@ -43,8 +43,8 @@
                         </a>
                     </li>
                     @else
-                    <li class="nav-item  {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}" >
-                        <a href="{{ route('dashboard') }}" class="nav-link">
+                    <li class="nav-item  {{ Route::currentRouteName() == 'dashboard.index' ? 'active' : '' }}" >
+                        <a href="{{ route('dashboard.index') }}" class="nav-link">
                             Dashboard
                         </a>
                     </li>

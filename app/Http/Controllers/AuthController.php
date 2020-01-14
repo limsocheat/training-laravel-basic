@@ -21,12 +21,14 @@ class AuthController extends Controller
     public function register(Request $request)
     {
 
+        // // Validate Requeest
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
+        // Get data from input and create user 
         $user   = User::create([
             'name'      => $request->input('name'),
             'email'     => $request->input('email'),
@@ -34,12 +36,20 @@ class AuthController extends Controller
             'phone'     => '02345678'
         ]);
 
-        $user   = Auth::guard()->attempt( $request->only('email', 'password'), $request->filled('remember') );
+        //Login created user
+        $user   = Auth::guard()->attempt($request->only('email', 'password'), $request->filled('remember'));
 
-        if($user) {
+        // If login success 
+        if ($user) {
+            // Generate Session 
             $request->session()->regenerate();
-            return redirect(route('dashboard'));
-        } else {
+            // Redirect to any page 
+            return redirect(route('dashboard.index'));
+        }
+
+        // If login or register not success 
+        else {
+            // Return error message 
             throw ValidationException::withMessages([
                 'email' => [trans('auth.failed')],
             ]);
@@ -54,24 +64,25 @@ class AuthController extends Controller
     public function login(Request $request)
     {
 
-        if (method_exists($this, 'hasTooManyLoginAttempts') &&
-            $this->hasTooManyLoginAttempts($request)) {
+        if (
+            method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)
+        ) {
             $this->fireLockoutEvent($request);
 
             return $this->sendLockoutResponse($request);
         }
-        
-        $user   = Auth::guard()->attempt( $request->only('email', 'password'), $request->filled('remember') );
 
-        if($user) {
+        $user   = Auth::guard()->attempt($request->only('email', 'password'), $request->filled('remember'));
+
+        if ($user) {
             $request->session()->regenerate();
-            return redirect(route('dashboard'));
+            return redirect(route('dashboard.index'));
         } else {
             throw ValidationException::withMessages([
                 'email' => [trans('auth.failed')],
             ]);
         }
-
     }
 
     protected function sendLockoutResponse(Request $request)
@@ -101,5 +112,4 @@ class AuthController extends Controller
     {
         //
     }
-
 }
