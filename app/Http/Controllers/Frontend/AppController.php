@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Listing;
 use App\Models\Category;
+use Cohensive\Embed\Facades\Embed;
 
 class AppController extends Controller
 {
@@ -42,9 +43,18 @@ class AppController extends Controller
 
     public function listing(Request $request, $id = 'Socheat')
     {
-        $listing = Listing::findOrFail($id);
+        $listing    = Listing::findOrFail($id);
+        $video_url  = $listing->video ?  $listing->video->url :null ;
+        $video      = Embed::make($video_url)->parseUrl();
 
-        return view('frontend.listing', ['listing' => $listing]);
+        if($video) {
+            $video->setAttribute(['width' => 600]);
+            $video  = $video->getHtml();
+        } else {
+            $video  = null;
+        }
+
+        return view('frontend.listing', ['listing' => $listing, 'video' => $video]);
     }
 
     public function about()

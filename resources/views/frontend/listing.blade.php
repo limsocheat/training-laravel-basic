@@ -29,6 +29,29 @@
         <img src="{{ $listing['image'] }}" style="width: 500px; height: auto" />
         <h4>{{ $listing['description'] }}</h4>
         <br>
+
+        <p>
+            <strong>Videos</strong>
+            <p>
+                {!! $video !!}
+            </p>
+        </p>
+
+
+        <p>
+            <strong>Features</strong>
+            @foreach($listing->features as $feature)
+                <div class="btn btn-primary">{{ $feature->title }}</div>
+            @endforeach
+        </p>
+
+        <p>
+            <strong>Tags</strong>
+            @foreach($listing->tags as $tag)
+                <div class="btn btn-primary">{{ $tag->title }}</div>
+            @endforeach
+        </p>
+
         <strong>User: {{ $listing->user ? $listing->user->name : null }}</strong>
         <br>
         <strong>Category: {{ $listing->category ? $listing->category->title : 'N/A' }}</strong>

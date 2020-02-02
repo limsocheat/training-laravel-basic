@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 Route::namespace('Frontend')->group(function () {
     Route::get('/', 'AppController@index')->name('app.index');
