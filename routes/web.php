@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Contact;
+use App\Models\Gallery;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -8,6 +11,22 @@ Route::namespace('Frontend')->group(function () {
     Route::get('/listings', 'AppController@listings')->name('app.listings');
     Route::get('/listing/{id?}', 'AppController@listing')->name('app.listing');
     Route::get('/about', 'AppController@about');
+    Route::get('/contact/{contact}', function($contact) {
+        $contact    = Contact::findOrFail($contact);
+        return view('contact', ['contact' => $contact]);
+    });
+
+    Route::get('/user/{user}', function($id) {
+
+        $user   = User::findOrFail($id);
+        return view('user', ['user' => $user]);
+    });
+
+    Route::get('/gallery/{gallery}', function($id) {
+        $gallery = Gallery::findOrFail($id);
+
+        return view('gallery', ['gallery' => $gallery]);
+    });
 });
 
 // Route::namespace('Dashboard')->group(function() {

@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\Gallery;
+use App\Models\Listing;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -36,4 +38,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // One to Many 
+    public function listings()
+    {
+        return $this->hasMany(Listing::class);
+    }
+
+    // HasManyThrough
+    public function galleries()
+    {
+        return $this->hasManyThrough(Gallery::class, Listing::class);
+    }
 }
